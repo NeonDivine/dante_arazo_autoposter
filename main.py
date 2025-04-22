@@ -8,7 +8,7 @@ from datetime import datetime
 
 # 🔐 API Ključi iz okolja
 openai.api_key = os.getenv("OPENAI_API_KEY")
-ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN")  # ← zdaj uporabljaš PAGE token
+ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN")  # ← uporabi pravi PAGE token
 FB_PAGE_ID = os.getenv("FB_PAGE_ID")
 IG_USER_ID = os.getenv("IG_USER_ID")
 
@@ -96,9 +96,14 @@ def post_once():
 
     log(f"✍️ Caption: {caption}")
 
-    # ✅ Objava na Facebook
+    # ✅ Objava na Facebook s PAGE TOKEN
+    log("📘 Objavljam na Facebook stran...")
     fb_url = f"https://graph.facebook.com/v19.0/{FB_PAGE_ID}/photos"
-    fb_payload = {"url": final_url, "caption": caption, "access_token": ACCESS_TOKEN}
+    fb_payload = {
+        "url": final_url,
+        "caption": caption,
+        "access_token": ACCESS_TOKEN
+    }
     fb_res = requests.post(fb_url, data=fb_payload).json()
     log(f"✅ FB objavljeno: {fb_res}")
 
