@@ -1,0 +1,46 @@
+services:
+  - type: cron
+    name: dante_cron
+    runtime: python
+    rootDir: .  # Dante je v rootu
+    schedule: "0 9,14 * * *"  # 11:00 in 16:00 SLO
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py"
+    envVars:
+      - key: OPENAI_API_KEY
+        fromEnvVar: OPENAI_API_KEY
+      - key: ACCESS_TOKEN
+        fromEnvVar: ACCESS_TOKEN
+      - key: FB_PAGE_ID
+        fromEnvVar: FB_PAGE_ID
+      - key: IG_USER_ID
+        fromEnvVar: IG_USER_ID
+      - key: CLOUDINARY_CLOUD_NAME
+        fromEnvVar: CLOUDINARY_CLOUD_NAME
+      - key: CLOUDINARY_API_KEY
+        fromEnvVar: CLOUDINARY_API_KEY
+      - key: CLOUDINARY_API_SECRET
+        fromEnvVar: CLOUDINARY_API_SECRET
+
+  - type: cron
+    name: neon-divine-daily-post
+    runtime: python
+    rootDir: neon_divine_render_safe  # <-- to je ključno
+    schedule: "0 8,12,16,20 * * *"  # 4x dnevno
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py"
+    envVars:
+      - key: OPENAI_API_KEY
+        fromEnvVar: OPENAI_API_KEY
+      - key: ACCESS_TOKEN
+        fromEnvVar: ACCESS_TOKEN
+      - key: FB_PAGE_ID
+        fromEnvVar: FB_PAGE_ID
+      - key: IG_USER_ID
+        fromEnvVar: IG_USER_ID
+      - key: CLOUDINARY_CLOUD_NAME
+        fromEnvVar: CLOUDINARY_CLOUD_NAME
+      - key: CLOUDINARY_API_KEY
+        fromEnvVar: CLOUDINARY_API_KEY
+      - key: CLOUDINARY_API_SECRET
+        fromEnvVar: CLOUDINARY_API_SECRET
