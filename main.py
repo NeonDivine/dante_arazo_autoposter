@@ -1,3 +1,4 @@
+
 import openai
 import requests
 import random
@@ -8,7 +9,7 @@ from datetime import datetime
 
 # 🔐 API Ključi iz okolja
 openai.api_key = os.getenv("OPENAI_API_KEY")
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN")  # ← zdaj uporabljaš PAGE token
 FB_PAGE_ID = os.getenv("FB_PAGE_ID")
 IG_USER_ID = os.getenv("IG_USER_ID")
 
@@ -19,21 +20,21 @@ cloudinary.config(
     api_secret=os.getenv("CLOUDINARY_API_SECRET")
 )
 
-# 👕 DRIPARA outfiti in lokacije
+# 👕 DRIPARA outfiti in lokacije (realistični + z logotipom)
 outfits = [
-    "black DRIPARA hoodie with bold logo",
-    "oversized white DRIPARA T-shirt with street vibe",
-    "DRIPARA tracksuit with clean sneakers",
-    "limited edition red DRIPARA hoodie and cap",
-    "gray DRIPARA set with minimalistic design"
+    "black DRIPARA hoodie with embroidered logo on chest",
+    "white oversized DRIPARA T-shirt with centered logo",
+    "DRIPARA grey tracksuit with minimal logo design",
+    "limited edition red DRIPARA hoodie and cap with logo detail",
+    "blue DRIPARA hoodie with reflective print logo"
 ]
 
 locations = [
     "urban basketball court at sunset",
-    "modern glass rooftop with skyline",
-    "empty warehouse with graffiti",
-    "city alley with foggy lights",
-    "stylish crosswalk in Paris street"
+    "modern rooftop with city skyline in background",
+    "industrial warehouse with dramatic lighting",
+    "Paris street with rain reflections",
+    "crosswalk at golden hour with stylish shadow"
 ]
 
 def allowed_to_post():
@@ -56,7 +57,7 @@ def post_once():
 
     outfit = random.choice(outfits)
     location = random.choice(locations)
-    prompt = f"{outfit}, {location}, ultra-realistic fashion editorial photo, soft cinematic lighting, male model"
+    prompt = f"{outfit}, {location}, ultra-realistic fashion editorial photo, soft cinematic lighting, male model, drapery shadows"
     log(f"🎨 Generiram sliko z DALL·E: {prompt}")
 
     try:
@@ -80,8 +81,9 @@ def post_once():
     log(f"☁️ Slika naložena: {final_url}")
 
     caption_prompt = (
-        "Napiši močan, kratek motivacijski citat v slovenščini na temo samozavesti ali discipline. "
-        "Dodaj 3 moderne hashtage in zaključni poziv k dejanju (CTA) kot 'komentiraj' ali 'deli'."
+        "Napiši kratek, močan, avtentičen motivacijski citat v slovenščini. "
+        "Tema: samozavest, napredek, disciplina. Dodaj 3 moderne hashtage. "
+        "Zaključi s CTA kot 'komentiraj' ali 'deli'."
     )
     try:
         chat = openai.chat.completions.create(
@@ -90,7 +92,7 @@ def post_once():
         )
         caption = chat.choices[0].message.content.strip()
     except Exception as e:
-        caption = "Naj tvoj stil govori. #dripara #samozavest #outfitdneva\n👉 Opiši, kaj bi ti oblekel!"
+        caption = "Vzemi vajeti v svoje roke. #dripara #samozavest #bodiikona\n💬 Komentiraj spodaj!"
         log(f"⚠️ Napaka pri captionu: {e}")
 
     log(f"✍️ Caption: {caption}")
@@ -126,7 +128,6 @@ def post_once():
         log(f"⚠️ Napaka pri IG objavi: {media_res}")
 
     return "\n".join(logs)
-
 
 if __name__ == '__main__':
     output = post_once()
