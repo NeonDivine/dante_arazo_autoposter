@@ -133,7 +133,7 @@ def post_once():
 
     return "\n".join(logs)
 
-if __name__ == '__main__':
-    output = post_once()
-    print("\n--- REZULTAT ---\n")
-    print(output)
+#if __name__ == '__main__':
+#    output = post_once()
+#    print("\n--- REZULTAT ---\n")
+#   print(output)
